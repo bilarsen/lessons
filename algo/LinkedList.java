@@ -95,8 +95,12 @@ public class LinkedList {
         // если _nodeAfter = null ,
         // добавьте новый элемент первым в списке
         if (_nodeAfter == null) {
-            _nodeToInsert.next = head;
-            head = _nodeToInsert;
+            if (count() == 0) {
+                addInTail(_nodeToInsert);
+            } else {
+                _nodeToInsert.next = head;
+                head = _nodeToInsert;
+            }
         } else {
             Node node = find(_nodeAfter.value);
             if (node != null) {

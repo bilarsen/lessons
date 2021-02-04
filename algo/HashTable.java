@@ -22,7 +22,7 @@ public class HashTable {
         for (char c : value.toCharArray()) {
             hash = hash * 31 + c;
         }
-        return hash % size;
+        return Math.abs(hash) % size;
     }
 
     public int seekSlot(String value) {

@@ -44,15 +44,15 @@ public class PowerSet {
 
     public PowerSet intersection(PowerSet set2) {
         // пересечение текущего множества и set2
-        if (set2 == null || set2.size() == 0) return null;
         PowerSet powerSet = new PowerSet();
+        if (set2 == null || set2.size() == 0) return powerSet;
         for (LinkedList<String> bucket : hashtable) {
             if (bucket == null) continue;
             for (String str : bucket) {
                 if (set2.get(str) == true) powerSet.put(str);
             }
         }
-        return powerSet.size() == 0 ? null : powerSet;
+        return powerSet;
     }
 
     public PowerSet union(PowerSet set2) {
@@ -60,12 +60,12 @@ public class PowerSet {
         PowerSet powerSet = new PowerSet();
         powerSet.putAll(this);
         powerSet.putAll(set2);
-        return powerSet.size() == 0 ? null : powerSet;
+        return powerSet;
     }
 
     public PowerSet difference(PowerSet set2) {
         // разница текущего множества и set2
-        if (set2 == null || set2.size() == 0) return this.size() == 0 ? null : this;
+        if (set2 == null || set2.size() == 0) return this;
         PowerSet powerSet = new PowerSet();
         for (LinkedList<String> bucket : hashtable) {
             if (bucket == null) continue;
@@ -73,7 +73,7 @@ public class PowerSet {
                 if (!set2.get(str)) powerSet.put(str);
             }
         }
-        return powerSet.size() == 0 ? null : powerSet;
+        return powerSet;
     }
 
     public boolean isSubset(PowerSet set2) {
@@ -116,14 +116,10 @@ public class PowerSet {
         LinkedList<String> bucket = hashtable[index];
         if (bucket == null) {
             hashtable[index] = bucket = new LinkedList<>();
-            bucket.add(value);
-            return true;
         } else if (bucket.contains(value)) {
             return false;
-        } else {
-            bucket.add(value);
-            return true;
         }
+        return bucket.add(value);
     }
 
     private boolean bucketRemove(String value) {

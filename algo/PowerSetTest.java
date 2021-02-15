@@ -4,9 +4,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PowerSetTest {
 
@@ -84,6 +82,8 @@ public class PowerSetTest {
         Assert.assertEquals(1, powerSet.size());
         Assert.assertTrue(powerSet.remove("bar"));
         Assert.assertEquals(0, powerSet.size());
+        Assert.assertFalse(powerSet.remove("bar"));
+        Assert.assertEquals(0, powerSet.size());
     }
 
     @Test
@@ -110,18 +110,19 @@ public class PowerSetTest {
         List<String> expected = Arrays.asList("hello", "world", "test", "0123456789");
         List<String> actual = powerSet.intersection(set).toList();
         Assert.assertTrue(expected.containsAll(actual) && actual.containsAll(expected));
+        Assert.assertEquals(4, powerSet.intersection(set).size());
 
         set.remove("hello");
         set.remove("world");
         set.remove("test");
         set.remove("0123456789");
-        Assert.assertNull(powerSet.intersection(set));
+        Assert.assertEquals(0, powerSet.intersection(set).size());
 
         set.remove("");
         set.remove("not found");
         set.remove("me");
         set.remove("foobar");
-        Assert.assertNull(powerSet.intersection(set));
+        Assert.assertEquals(0, powerSet.intersection(set).size());
 
         set.put("word");
         powerSet.remove("hello");
@@ -132,15 +133,15 @@ public class PowerSetTest {
         powerSet.remove("remove me");
         powerSet.remove("foo");
         powerSet.remove("bar");
-        Assert.assertNull(powerSet.intersection(set));
+        Assert.assertEquals(0, powerSet.intersection(set).size());
     }
 
     @Test
     public void testUnion() {
         PowerSet set = new PowerSet();
-        Assert.assertNull(powerSet.union(set));
+        Assert.assertEquals(0, powerSet.union(set).size());
 
-        Assert.assertNull(powerSet.union(null));
+        Assert.assertEquals(0, powerSet.union(null).size());
 
         powerSet.put("hello");
         powerSet.put("world");
@@ -155,6 +156,7 @@ public class PowerSetTest {
         expected.addAll(powerSet.toList());
         List<String> actual = powerSet.union(set).toList();
         Assert.assertTrue(expected.containsAll(actual) && actual.containsAll(expected));
+        Assert.assertEquals(8, powerSet.union(set).size());
 
         set.put("");
         set.put("hello");
@@ -168,6 +170,7 @@ public class PowerSetTest {
         expected.addAll(set.toList());
         actual = powerSet.union(set).toList();
         Assert.assertTrue(expected.containsAll(actual) && actual.containsAll(expected));
+        Assert.assertEquals(12, powerSet.union(set).size());
 
         powerSet.remove("hello");
         powerSet.remove("world");
@@ -181,14 +184,15 @@ public class PowerSetTest {
         expected = set.toList();
         actual = powerSet.union(set).toList();
         Assert.assertTrue(expected.containsAll(actual) && actual.containsAll(expected));
+        Assert.assertEquals(8, powerSet.union(set).size());
     }
 
     @Test
     public void testDifference() {
         PowerSet set = new PowerSet();
-        Assert.assertNull(powerSet.difference(set));
+        Assert.assertEquals(0, powerSet.difference(set).size());
 
-        Assert.assertNull(powerSet.difference(null));
+        Assert.assertEquals(0, powerSet.difference(null).size());
 
         powerSet.put("hello");
         powerSet.put("world");
@@ -203,8 +207,10 @@ public class PowerSetTest {
         expected.addAll(powerSet.toList());
         List<String> actual = powerSet.difference(set).toList();
         Assert.assertTrue(expected.containsAll(actual) && actual.containsAll(expected));
+        Assert.assertEquals(8, powerSet.difference(set).size());
         actual = powerSet.difference(null).toList();
         Assert.assertTrue(expected.containsAll(actual) && actual.containsAll(expected));
+        Assert.assertEquals(8, powerSet.difference(set).size());
 
         set.put("");
         set.put("hello");
@@ -218,6 +224,7 @@ public class PowerSetTest {
         expected = Arrays.asList("deleted", "remove me", "foo", "bar");
         actual = powerSet.difference(set).toList();
         Assert.assertTrue(expected.containsAll(actual) && actual.containsAll(expected));
+        Assert.assertEquals(4, powerSet.difference(set).size());
 
         powerSet.remove("hello");
         powerSet.remove("world");
@@ -228,7 +235,7 @@ public class PowerSetTest {
         powerSet.remove("foo");
         powerSet.remove("bar");
 
-        Assert.assertNull(powerSet.difference(set));
+        Assert.assertEquals(0, powerSet.difference(set).size());
     }
 
     @Test

@@ -80,7 +80,7 @@ public class PowerSet {
         // возвращает true, если set2 есть
         // подмножество текущего множества,
         // иначе false
-        if (set2 == null || set2.size() == 0) return false;
+        if (set2 == null || set2.size() == 0) return true;
         return set2.toList().stream().allMatch(this::get);
     }
 

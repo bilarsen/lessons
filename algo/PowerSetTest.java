@@ -241,8 +241,8 @@ public class PowerSetTest {
     @Test
     public void testIsSubset() {
         PowerSet set = new PowerSet();
-        Assert.assertFalse(powerSet.isSubset(set));
-        Assert.assertFalse(powerSet.isSubset(null));
+        Assert.assertTrue(powerSet.isSubset(set));
+        Assert.assertTrue(powerSet.isSubset(null));
 
         powerSet.put("hello");
         powerSet.put("world");
@@ -260,6 +260,13 @@ public class PowerSetTest {
         Assert.assertFalse(powerSet.isSubset(set));
 
         set.remove("");
+        Assert.assertTrue(powerSet.isSubset(set));
+
+        set.put("hello");
+        set.put("deleted");
+        set.put("remove me");
+        set.put("foo");
+        set.put("bar");
         Assert.assertTrue(powerSet.isSubset(set));
 
         powerSet.remove("hello");

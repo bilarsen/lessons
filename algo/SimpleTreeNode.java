@@ -71,7 +71,7 @@ class SimpleTree<T> {
 
     public int LeafCount() {
         // количество листьев в дереве
-        if (Root == null || Root.Children == null) return 0;
+        if (Root == null) return 0;
         return countLeaves(Root);
     }
 

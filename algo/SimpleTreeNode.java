@@ -65,12 +65,13 @@ class SimpleTree<T> {
     public int Count() {
         // количество всех узлов в дереве
         if (Root == null) return 0;
+        else if (Root.Children == null) return 1;
         return countNodes(Root);
     }
 
     public int LeafCount() {
         // количество листьев в дереве
-        if (Root == null) return 0;
+        if (Root == null || Root.Children == null) return 0;
         return countLeaves(Root);
     }
 

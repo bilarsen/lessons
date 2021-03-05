@@ -196,7 +196,7 @@ public class SimpleTreeTest {
     public void testCount() {
         SimpleTreeNode<Integer> root = new SimpleTreeNode<>(9, null);
         simpleTree = new SimpleTree<>(root);
-        Assert.assertEquals(0, simpleTree.Count());
+        Assert.assertEquals(1, simpleTree.Count());
 
         simpleTree = fillSimpleTree();
         Assert.assertEquals(5, simpleTree.Count());
@@ -206,7 +206,7 @@ public class SimpleTreeTest {
     public void testLeafCount() {
         SimpleTreeNode<Integer> root = new SimpleTreeNode<>(9, null);
         simpleTree = new SimpleTree<>(root);
-        Assert.assertEquals(1, simpleTree.LeafCount());
+        Assert.assertEquals(0, simpleTree.LeafCount());
 
         simpleTree = fillSimpleTree();
         Assert.assertEquals(4, simpleTree.LeafCount());

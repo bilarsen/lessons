@@ -210,6 +210,20 @@ public class SimpleTreeTest {
 
         simpleTree = fillSimpleTree();
         Assert.assertEquals(4, simpleTree.LeafCount());
+
+        SimpleTreeNode<Integer> node6 = simpleTree.FindNodesByValue(6).get(0);
+        Assert.assertNotNull(node6);
+        Assert.assertEquals(Integer.valueOf(6), node6.NodeValue);
+        simpleTree.DeleteNode(node6);
+        Assert.assertEquals(0, simpleTree.FindNodesByValue(6).size());
+        Assert.assertEquals(4, simpleTree.LeafCount());
+
+        SimpleTreeNode<Integer> node7 = simpleTree.FindNodesByValue(7).get(0);
+        Assert.assertNotNull(node7);
+        Assert.assertEquals(Integer.valueOf(7), node7.NodeValue);
+        simpleTree.DeleteNode(node7);
+        Assert.assertEquals(0, simpleTree.FindNodesByValue(7).size());
+        Assert.assertEquals(3, simpleTree.LeafCount());
     }
 
     private int[] getChildren(SimpleTreeNode<Integer> node) {

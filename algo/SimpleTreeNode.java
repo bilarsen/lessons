@@ -34,9 +34,12 @@ class SimpleTree<T> {
         if (NodeToDelete == null || NodeToDelete.Parent == null) return;
         NodeToDelete.Parent.Children.remove(NodeToDelete);
         if (NodeToDelete.Children != null) {
-            NodeToDelete.Parent.Children.addAll(NodeToDelete.Children);
+            for (SimpleTreeNode<T> child : NodeToDelete.Children) {
+                AddChild(NodeToDelete.Parent, child);
+            }
             NodeToDelete.Children = null;
         }
+        NodeToDelete.Parent = null;
         NodeToDelete = null;
     }
 

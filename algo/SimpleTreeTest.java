@@ -231,33 +231,31 @@ public class SimpleTreeTest {
         SimpleTreeNode<Integer> root = new SimpleTreeNode<>(9, null);
         simpleTree = new SimpleTree<>(root);
 
-        SimpleTreeNode<Integer> node4 = new SimpleTreeNode<>(4, null);
-        SimpleTreeNode<Integer> node17 = new SimpleTreeNode<>(17, null);
-        SimpleTreeNode<Integer> node3 = new SimpleTreeNode<>(3, null);
-        SimpleTreeNode<Integer> node5 = new SimpleTreeNode<>(5, null);
-        SimpleTreeNode<Integer> node7 = new SimpleTreeNode<>(7, null);
-        SimpleTreeNode<Integer> node22 = new SimpleTreeNode<>(22, null);
+        SimpleTreeNode<Integer> n1 = new SimpleTreeNode<>(1, null);
+        SimpleTreeNode<Integer> n2 = new SimpleTreeNode<>(2, null);
+        SimpleTreeNode<Integer> n3 = new SimpleTreeNode<>(3, null);
+        simpleTree.AddChild(root, n1);
+        simpleTree.AddChild(root, n2);
+        simpleTree.AddChild(root, n3);
 
-        simpleTree.AddChild(root, node4);
-        simpleTree.AddChild(root, node17);
-        simpleTree.AddChild(root, node3);
-        simpleTree.AddChild(node4, node5);
-        simpleTree.AddChild(node4, node7);
-
-        Assert.assertEquals(4, simpleTree.LeafCount());
+        SimpleTreeNode<Integer> n12 = new SimpleTreeNode<>(12, null);
+        SimpleTreeNode<Integer> n13 = new SimpleTreeNode<>(13, null);
+        simpleTree.AddChild(n1, n12);
+        simpleTree.AddChild(n1, n13);
         Assert.assertEquals(6, simpleTree.Count());
 
-        simpleTree.AddChild(node17, node22);
+        SimpleTreeNode<Integer> n21 = new SimpleTreeNode<>(21, null);
+        simpleTree.AddChild(n2, n21);
+        Assert.assertEquals(7, simpleTree.Count());
         Assert.assertEquals(4, simpleTree.LeafCount());
-        Assert.assertEquals(7, simpleTree.Count());
 
-        simpleTree.MoveNode(node17, node3);
-        Assert.assertEquals(3, simpleTree.LeafCount());
+        simpleTree.MoveNode(n2, n3);
         Assert.assertEquals(7, simpleTree.Count());
-
-        simpleTree.DeleteNode(node17);
         Assert.assertEquals(3, simpleTree.LeafCount());
+
+        simpleTree.DeleteNode(n21);
         Assert.assertEquals(6, simpleTree.Count());
+        Assert.assertEquals(3, simpleTree.LeafCount());
     }
 
     private int[] getChildren(SimpleTreeNode<Integer> node) {

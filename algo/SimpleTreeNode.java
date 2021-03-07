@@ -108,7 +108,7 @@ class SimpleTree<T> {
     }
 
     private int countLeaves(SimpleTreeNode<T> root) {
-        if (root.Children == null) return 1;
+        if (root.Children == null || root.Children.size() == 0) return 1;
         int leaves = 0;
         for (SimpleTreeNode<T> child : root.Children) {
             leaves += countLeaves(child);

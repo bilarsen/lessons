@@ -98,10 +98,11 @@ class SimpleTree<T> {
     }
 
     private int countNodes(SimpleTreeNode<T> root) {
-        if (root.Children == null) return 0;
         int nodes = 1;
-        for (SimpleTreeNode<T> child : root.Children) {
-            nodes += countNodes(child);
+        if (root.Children != null) {
+            for (SimpleTreeNode<T> child : root.Children) {
+                nodes += countNodes(child);
+            }
         }
         return nodes;
     }

@@ -22,4 +22,24 @@ public class SimpleTreeUtils {
         }
         return nodeLevelMap;
     }
+
+    public static <T> Map<Integer, List<SimpleTreeNode<T>>> assignNodeLevelsRecursively(SimpleTree<T> simpleTree) {
+        Map<Integer, List<SimpleTreeNode<T>>> nodeLevelMap = new HashMap<>();
+        if (simpleTree.Root != null) assignNodeLevelsRecursively(simpleTree.Root, nodeLevelMap);
+        return nodeLevelMap;
+    }
+
+    private static <T> void assignNodeLevelsRecursively(SimpleTreeNode<T> root, Map<Integer, List<SimpleTreeNode<T>>> nodeLevelMap) {
+        if (root.Children == null) return;
+        for (SimpleTreeNode<T> child : root.Children) {
+            assignNodeLevelsRecursively(child, nodeLevelMap);
+            int level = getNodeLevel(child);
+            nodeLevelMap.computeIfAbsent(level, nodes -> new ArrayList<>()).add(child);
+        }
+    }
+
+    private static <T> int getNodeLevel(SimpleTreeNode<T> root) {
+        if (root.Parent == null) return 0;
+        return 1 + getNodeLevel(root.Parent);
+    }
 }

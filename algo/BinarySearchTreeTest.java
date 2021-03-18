@@ -1,6 +1,7 @@
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
 
 public class BinarySearchTreeTest {
 
@@ -37,43 +38,43 @@ public class BinarySearchTreeTest {
         tree = new BST<>(root);
 
         bstFind = tree.FindNodeByKey(3);
-        Assert.assertEquals(3,bstFind.Node.NodeKey);
+        Assert.assertEquals(3, bstFind.Node.NodeKey);
         Assert.assertTrue(bstFind.NodeHasKey);
         Assert.assertFalse(bstFind.ToLeft);
 
         bstFind = tree.FindNodeByKey(1);
-        Assert.assertEquals(3,bstFind.Node.NodeKey);
+        Assert.assertEquals(3, bstFind.Node.NodeKey);
         Assert.assertFalse(bstFind.NodeHasKey);
         Assert.assertTrue(bstFind.ToLeft);
 
         BSTNode<Integer> node1 = new BSTNode<>(1, 1, node3);
         node3.LeftChild = node1;
         bstFind = tree.FindNodeByKey(1);
-        Assert.assertEquals(1,bstFind.Node.NodeKey);
+        Assert.assertEquals(1, bstFind.Node.NodeKey);
         Assert.assertTrue(bstFind.NodeHasKey);
         Assert.assertFalse(bstFind.ToLeft);
 
         bstFind = tree.FindNodeByKey(16);
-        Assert.assertEquals(17,bstFind.Node.NodeKey);
+        Assert.assertEquals(17, bstFind.Node.NodeKey);
         Assert.assertFalse(bstFind.NodeHasKey);
         Assert.assertTrue(bstFind.ToLeft);
 
         BSTNode<Integer> node16 = new BSTNode<>(16, 16, node17);
         node17.LeftChild = node16;
         bstFind = tree.FindNodeByKey(16);
-        Assert.assertEquals(16,bstFind.Node.NodeKey);
+        Assert.assertEquals(16, bstFind.Node.NodeKey);
         Assert.assertTrue(bstFind.NodeHasKey);
         Assert.assertFalse(bstFind.ToLeft);
 
         bstFind = tree.FindNodeByKey(23);
-        Assert.assertEquals(22,bstFind.Node.NodeKey);
+        Assert.assertEquals(22, bstFind.Node.NodeKey);
         Assert.assertFalse(bstFind.NodeHasKey);
         Assert.assertFalse(bstFind.ToLeft);
 
         BSTNode<Integer> node23 = new BSTNode<>(23, 23, node22);
         node22.RightChild = node23;
         bstFind = tree.FindNodeByKey(23);
-        Assert.assertEquals(23,bstFind.Node.NodeKey);
+        Assert.assertEquals(23, bstFind.Node.NodeKey);
         Assert.assertTrue(bstFind.NodeHasKey);
         Assert.assertFalse(bstFind.ToLeft);
     }
@@ -182,17 +183,60 @@ public class BinarySearchTreeTest {
         Assert.assertEquals(5, tree.Root.LeftChild.NodeKey);
     }
 
+    @Test
+    public void testWideAllNodes() {
+        tree = new BST<>(null);
+        List<BSTNode<Integer>> actual = tree.WideAllNodes();
+        Assert.assertEquals(0, actual.size());
+        Assert.assertTrue(actual.isEmpty());
+
+        int[] expected = new int[]{9, 4, 17, 3, 6, 22, 5, 7, 20};
+        tree = fillTree();
+        Assert.assertArrayEquals(expected, getValues(tree.WideAllNodes()));
+    }
+
+    @Test
+    public void testDeepAllNodes() {
+        tree = new BST<>(null);
+        List<BSTNode<Integer>> actual = tree.DeepAllNodes(6);
+        Assert.assertEquals(0, actual.size());
+        Assert.assertTrue(actual.isEmpty());
+
+        tree = fillTree();
+        int[] expected;
+
+        //in-order
+        expected = new int[]{3, 4, 5, 6, 7, 9, 17, 20, 22};
+        Assert.assertArrayEquals(expected, getValues(tree.DeepAllNodes(0)));
+
+        //post-order
+        expected = new int[]{3, 5, 7, 6, 4, 20, 22, 17, 9};
+        Assert.assertArrayEquals(expected, getValues(tree.DeepAllNodes(1)));
+
+        //pre-order
+        expected = new int[]{9, 4, 3, 6, 5, 7, 17, 22, 20};
+        Assert.assertArrayEquals(expected, getValues(tree.DeepAllNodes(2)));
+    }
+
     private BST<Integer> fillTree() {
         BSTNode<Integer> root = new BSTNode<>(9, 9, null);
         tree = new BST<>(root);
-        tree .AddKeyValue(4, 4);
-        tree .AddKeyValue(3, 3);
-        tree .AddKeyValue(17, 17);
-        tree .AddKeyValue(22, 22);
-        tree .AddKeyValue(6, 6);
-        tree .AddKeyValue(5, 5);
-        tree .AddKeyValue(7, 7);
-        tree .AddKeyValue(20, 20);
+        tree.AddKeyValue(4, 4);
+        tree.AddKeyValue(3, 3);
+        tree.AddKeyValue(17, 17);
+        tree.AddKeyValue(22, 22);
+        tree.AddKeyValue(6, 6);
+        tree.AddKeyValue(5, 5);
+        tree.AddKeyValue(7, 7);
+        tree.AddKeyValue(20, 20);
         return tree;
+    }
+
+    private int[] getValues(List<BSTNode<Integer>> nodes) {
+        int[] values = new int[nodes.size()];
+        for (int i = 0; i < nodes.size(); i++) {
+            values[i] = nodes.get(i).NodeKey;
+        }
+        return values;
     }
 }

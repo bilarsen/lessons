@@ -89,6 +89,64 @@ class BST<T> {
         return nodeCount; // количество узлов в дереве
     }
 
+    public ArrayList<BSTNode<T>> WideAllNodes() {
+        ArrayList<BSTNode<T>> nodes = new ArrayList<>();
+        if (Root != null) BFS(Root, nodes);
+        return nodes;
+    }
+
+    public ArrayList<BSTNode<T>> DeepAllNodes(int order) {
+        ArrayList<BSTNode<T>> nodes = new ArrayList<>();
+        if (Root != null) {
+            switch (order) {
+                case 0:
+                    inOrderDFS(Root, nodes);
+                    break;
+                case 1:
+                    postOrderDFS(Root, nodes);
+                    break;
+                case 2:
+                    preOrderDFS(Root, nodes);
+                    break;
+                default:
+                    return nodes;
+            }
+        }
+        return nodes;
+    }
+
+    private void BFS(BSTNode<T> root, ArrayList<BSTNode<T>> nodes) {
+        ArrayDeque<BSTNode<T>> queue = new ArrayDeque<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            BSTNode<T> node = queue.poll();
+            nodes.add(node);
+            if (node.LeftChild != null) queue.offer(node.LeftChild);
+            if (node.RightChild != null) queue.offer(node.RightChild);
+        }
+    }
+
+    private void inOrderDFS(BSTNode<T> root, ArrayList<BSTNode<T>> nodes) {
+        if (root == null) return;
+        inOrderDFS(root.LeftChild, nodes);
+        nodes.add(root);
+        inOrderDFS(root.RightChild, nodes);
+    }
+
+    private void postOrderDFS(BSTNode<T> root, ArrayList<BSTNode<T>> nodes) {
+        if (root == null) return;
+        postOrderDFS(root.LeftChild, nodes);
+        postOrderDFS(root.RightChild, nodes);
+        nodes.add(root);
+    }
+
+    private void preOrderDFS(BSTNode<T> root, ArrayList<BSTNode<T>> nodes) {
+        if (root == null) return;
+        nodes.add(root);
+        preOrderDFS(root.LeftChild, nodes);
+        preOrderDFS(root.RightChild, nodes);
+    }
+
     private BSTNode<T> findNode(BSTNode<T> root, int key) {
         if (root == null || root.NodeKey == key) return root;
         BSTNode<T> node;

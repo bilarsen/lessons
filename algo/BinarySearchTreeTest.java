@@ -186,7 +186,7 @@ public class BinarySearchTreeTest {
     @Test
     public void testWideAllNodes() {
         tree = new BST<>(null);
-        List<BSTNode<Integer>> actual = tree.WideAllNodes();
+        List<BSTNode> actual = tree.WideAllNodes();
         Assert.assertEquals(0, actual.size());
         Assert.assertTrue(actual.isEmpty());
 
@@ -198,7 +198,7 @@ public class BinarySearchTreeTest {
     @Test
     public void testDeepAllNodes() {
         tree = new BST<>(null);
-        List<BSTNode<Integer>> actual = tree.DeepAllNodes(6);
+        List<BSTNode> actual = tree.DeepAllNodes(6);
         Assert.assertEquals(0, actual.size());
         Assert.assertTrue(actual.isEmpty());
 
@@ -232,7 +232,7 @@ public class BinarySearchTreeTest {
         return tree;
     }
 
-    private int[] getValues(List<BSTNode<Integer>> nodes) {
+    private int[] getValues(List<BSTNode> nodes) {
         int[] values = new int[nodes.size()];
         for (int i = 0; i < nodes.size(); i++) {
             values[i] = nodes.get(i).NodeKey;

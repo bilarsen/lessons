@@ -89,14 +89,14 @@ class BST<T> {
         return nodeCount; // количество узлов в дереве
     }
 
-    public ArrayList<BSTNode<T>> WideAllNodes() {
-        ArrayList<BSTNode<T>> nodes = new ArrayList<>();
+    public ArrayList<BSTNode> WideAllNodes() {
+        ArrayList<BSTNode> nodes = new ArrayList<>();
         if (Root != null) BFS(Root, nodes);
         return nodes;
     }
 
-    public ArrayList<BSTNode<T>> DeepAllNodes(int order) {
-        ArrayList<BSTNode<T>> nodes = new ArrayList<>();
+    public ArrayList<BSTNode> DeepAllNodes(int order) {
+        ArrayList<BSTNode> nodes = new ArrayList<>();
         if (Root != null) {
             switch (order) {
                 case 0:
@@ -115,7 +115,7 @@ class BST<T> {
         return nodes;
     }
 
-    private void BFS(BSTNode<T> root, ArrayList<BSTNode<T>> nodes) {
+    private void BFS(BSTNode<T> root, ArrayList<BSTNode> nodes) {
         ArrayDeque<BSTNode<T>> queue = new ArrayDeque<>();
         queue.offer(root);
         while (!queue.isEmpty()) {
@@ -126,21 +126,21 @@ class BST<T> {
         }
     }
 
-    private void inOrderDFS(BSTNode<T> root, ArrayList<BSTNode<T>> nodes) {
+    private void inOrderDFS(BSTNode<T> root, ArrayList<BSTNode> nodes) {
         if (root == null) return;
         inOrderDFS(root.LeftChild, nodes);
         nodes.add(root);
         inOrderDFS(root.RightChild, nodes);
     }
 
-    private void postOrderDFS(BSTNode<T> root, ArrayList<BSTNode<T>> nodes) {
+    private void postOrderDFS(BSTNode<T> root, ArrayList<BSTNode> nodes) {
         if (root == null) return;
         postOrderDFS(root.LeftChild, nodes);
         postOrderDFS(root.RightChild, nodes);
         nodes.add(root);
     }
 
-    private void preOrderDFS(BSTNode<T> root, ArrayList<BSTNode<T>> nodes) {
+    private void preOrderDFS(BSTNode<T> root, ArrayList<BSTNode> nodes) {
         if (root == null) return;
         nodes.add(root);
         preOrderDFS(root.LeftChild, nodes);

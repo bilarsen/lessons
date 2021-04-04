@@ -33,8 +33,10 @@ class BalancedBST {
 
     public boolean IsBalanced(BSTNode root_node) {
         if (root_node == null) return false; // сбалансировано ли дерево с корнем root_node
-        int leftHeight = getHeight(root_node.LeftChild);
-        int rightHeight = getHeight(root_node.RightChild);
+        int leftHeight = 0;
+        int rightHeight = 0;
+        if (root_node.LeftChild != null) leftHeight = getHeight(root_node.LeftChild);
+        if (root_node.RightChild != null) rightHeight = getHeight(root_node.RightChild);
         return Math.abs(leftHeight - rightHeight) <= 1;
     }
 

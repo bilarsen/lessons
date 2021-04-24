@@ -78,6 +78,14 @@ class SimpleTree<T> {
         return countLeaves(Root);
     }
 
+    public ArrayList<T> EvenTrees() {
+        ArrayList<T> nodePairs = new ArrayList<>();
+        if (Root != null && Count() % 2 == 0) {
+            findEdgesToRemove(Root, nodePairs);
+        }
+        return nodePairs;
+    }
+
     private void getAllNodes(SimpleTreeNode<T> root, List<SimpleTreeNode<T>> nodes) {
         if (root.Children == null) {
             nodes.add(root);
@@ -114,5 +122,17 @@ class SimpleTree<T> {
             leaves += countLeaves(child);
         }
         return leaves;
+    }
+
+    private void findEdgesToRemove(SimpleTreeNode<T> root, List<T> nodePairs) {
+        if (root.Children != null) {
+            for (SimpleTreeNode<T> child : root.Children) {
+                if (countNodes(child) % 2 == 0) {
+                    nodePairs.add(child.Parent.NodeValue);
+                    nodePairs.add(child.NodeValue);
+                }
+                findEdgesToRemove(child, nodePairs);
+            }
+        }
     }
 }

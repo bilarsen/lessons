@@ -2,6 +2,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SimpleTreeTest {
@@ -256,6 +257,40 @@ public class SimpleTreeTest {
         simpleTree.DeleteNode(n21);
         Assert.assertEquals(6, simpleTree.Count());
         Assert.assertEquals(3, simpleTree.LeafCount());
+    }
+
+    @Test
+    public void testEvenTrees() {
+        SimpleTreeNode<Integer> root = new SimpleTreeNode<>(1, null);
+        simpleTree = new SimpleTree<>(root);
+
+        SimpleTreeNode<Integer> node2 = new SimpleTreeNode<>(2, null);
+        SimpleTreeNode<Integer> node3 = new SimpleTreeNode<>(3, null);
+        SimpleTreeNode<Integer> node6 = new SimpleTreeNode<>(6, null);
+        SimpleTreeNode<Integer> node5 = new SimpleTreeNode<>(5, null);
+        SimpleTreeNode<Integer> node7 = new SimpleTreeNode<>(7, null);
+        SimpleTreeNode<Integer> node4 = new SimpleTreeNode<>(4, null);
+        SimpleTreeNode<Integer> node8 = new SimpleTreeNode<>(8, null);
+        SimpleTreeNode<Integer> node9 = new SimpleTreeNode<>(9, null);
+        SimpleTreeNode<Integer> node10 = new SimpleTreeNode<>(10, null);
+
+        simpleTree.AddChild(root, node2);
+        simpleTree.AddChild(root, node3);
+        simpleTree.AddChild(root, node6);
+        simpleTree.AddChild(node2, node5);
+        simpleTree.AddChild(node2, node7);
+        simpleTree.AddChild(node3, node4);
+        simpleTree.AddChild(node6, node8);
+        simpleTree.AddChild(node8, node9);
+        simpleTree.AddChild(node8, node10);
+
+        List<Integer> expected = new ArrayList<>();
+        expected.add(1);
+        expected.add(3);
+        expected.add(1);
+        expected.add(6);
+        List<Integer> actual = simpleTree.EvenTrees();
+        Assert.assertTrue(expected.size() == actual.size() && expected.containsAll(actual) && actual.containsAll(expected));
     }
 
     private int[] getChildren(SimpleTreeNode<Integer> node) {

@@ -80,14 +80,34 @@ class SimpleGraph {
         if (VFrom >= 0 && VTo < max_vertex && VFrom <= VTo) {
             for (int i = 0; i < max_vertex; i++) vertex[i].Hit = false;
             ArrayDeque<Integer> verticesHit = new ArrayDeque<>();
-            dfs(verticesHit, VFrom, VTo);
+            vertex[VFrom].Hit = true;
+            verticesHit.push(VFrom);
+            int currentVertex = VFrom;
+            while (!verticesHit.isEmpty()) {
+                if (m_adjacency[currentVertex][VTo] == 1) {
+                    verticesHit.push(VTo);
+                    break;
+                }
+                if (allAdjacentHit(currentVertex)) {
+                    if (verticesHit.size() == 1) return vertices;
+                    currentVertex = verticesHit.pop();
+                    vertex[currentVertex].Hit = true;
+                }
+                for (int i = 0; i < max_vertex; i++) {
+                    if (m_adjacency[currentVertex][i] == 1 && !vertex[i].Hit) {
+                        vertex[i].Hit = true;
+                        verticesHit.push(i);
+                        currentVertex = i;
+                        break;
+                    }
+                }
+            }
             while (verticesHit.size() > 0) {
                 vertices.add(vertex[verticesHit.pollLast()]);
             }
         }
-        return vertices.size() > 1 ? vertices : new ArrayList<>();
+        return vertices;
     }
-
 
     private int findAvailableIndex() {
         for (int i = 0; i < max_vertex; i++) {
@@ -100,20 +120,12 @@ class SimpleGraph {
         return index >= 0 && index < max_vertex;
     }
 
-    private void dfs(Deque<Integer> verticesHit, int vertexFrom, int vertexTo) {
-        if (!vertex[vertexFrom].Hit) {
-            vertex[vertexFrom].Hit = true;
-            verticesHit.push(vertexFrom);
-            if (m_adjacency[vertexFrom][vertexTo] == 1) {
-                verticesHit.push(vertexTo);
-                return;
+    private boolean allAdjacentHit(int vertexIndex) {
+        if (checkIndex(vertexIndex)) {
+            for (int i = 0; i < max_vertex; i++) {
+                if (m_adjacency[vertexIndex][i] == 1 && !vertex[i].Hit) return false;
             }
         }
-        for (int i = 0; i < max_vertex; i++) {
-            if (verticesHit.peek() == vertexTo) return;
-            else if (m_adjacency[vertexFrom][i] == 1 && !vertex[i].Hit) dfs(verticesHit, i, vertexTo);
-        }
-        if (verticesHit.size() <= 1) return;
-        dfs(verticesHit, verticesHit.pop(), vertexTo);
+        return true;
     }
 }

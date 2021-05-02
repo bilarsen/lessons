@@ -2,6 +2,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class SimpleGraphTest {
 
     private  SimpleGraph graph;
@@ -87,5 +91,61 @@ public class SimpleGraphTest {
         Assert.assertEquals(0, graph.m_adjacency[1][0]);
         Assert.assertEquals(0, graph.m_adjacency[2][0]);
         Assert.assertEquals(0, graph.m_adjacency[3][0]);
+    }
+
+    @Test
+    public void testDepthFirstSearch() {
+        graph.AddVertex(1);
+        graph.AddVertex(2);
+        graph.AddVertex(3);
+        graph.AddVertex(4);
+        graph.AddVertex(5);
+
+        graph.AddEdge(0, 1);
+        graph.AddEdge(0, 2);
+        graph.AddEdge(0, 3);
+        graph.AddEdge(1, 3);
+        graph.AddEdge(1, 4);
+        graph.AddEdge(2, 3);
+        graph.AddEdge(3, 4);
+
+        List<Vertex> expected = new ArrayList<>();
+        expected.add(graph.vertex[0]);
+        expected.add(graph.vertex[1]);
+        expected.add(graph.vertex[4]);
+        List<Vertex> actual = graph.DepthFirstSearch(0, 4);
+        Assert.assertTrue(expected.size() == actual.size() && expected.containsAll(actual) && actual.containsAll(expected));
+
+        graph.RemoveEdge(0, 1);
+        expected = new ArrayList<>();
+        expected.add(graph.vertex[0]);
+        expected.add(graph.vertex[2]);
+        expected.add(graph.vertex[3]);
+        expected.add(graph.vertex[4]);
+        actual = graph.DepthFirstSearch(0, 4);
+        Assert.assertTrue(expected.size() == actual.size() && expected.containsAll(actual) && actual.containsAll(expected));
+
+        graph.RemoveEdge(3, 4);
+        expected = new ArrayList<>();
+        expected.add(graph.vertex[0]);
+        expected.add(graph.vertex[2]);
+        expected.add(graph.vertex[3]);
+        expected.add(graph.vertex[1]);
+        expected.add(graph.vertex[4]);
+        actual = graph.DepthFirstSearch(0, 4);
+        Assert.assertTrue(expected.size() == actual.size() && expected.containsAll(actual) && actual.containsAll(expected));
+
+        graph.RemoveEdge(1, 4);
+        actual = graph.DepthFirstSearch(0, 4);
+        Assert.assertEquals(0, actual.size());
+    }
+
+    // helper method to print out to console
+    private int[] getVertexValues(List<Vertex> vertices) {
+        int[] values = new int[vertices.size()];
+        for (int i = 0; i < vertices.size(); i++) {
+            values[i] = vertices.get(i).Value;
+        }
+        return values;
     }
 }

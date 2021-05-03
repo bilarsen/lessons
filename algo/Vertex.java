@@ -77,7 +77,7 @@ class SimpleGraph {
         // Возвращается список узлов -- путь из VFrom в VTo.
         // Список пустой, если пути нету.
         ArrayList<Vertex> vertices = new ArrayList<>();
-        if (VFrom >= 0 && VTo < max_vertex && VFrom <= VTo) {
+        if (checkIndex(VFrom) && checkIndex(VTo)) {
             for (int i = 0; i < max_vertex; i++) vertex[i].Hit = false;
             ArrayDeque<Integer> verticesHit = new ArrayDeque<>();
             vertex[VFrom].Hit = true;
@@ -109,6 +109,15 @@ class SimpleGraph {
         return vertices;
     }
 
+    private boolean allAdjacentHit(int vertexIndex) {
+        if (checkIndex(vertexIndex)) {
+            for (int i = 0; i < max_vertex; i++) {
+                if (m_adjacency[vertexIndex][i] == 1 && !vertex[i].Hit) return false;
+            }
+        }
+        return true;
+    }
+
     private int findAvailableIndex() {
         for (int i = 0; i < max_vertex; i++) {
             if (vertex[i] == null) return i;
@@ -118,14 +127,5 @@ class SimpleGraph {
 
     private boolean checkIndex(int index) {
         return index >= 0 && index < max_vertex;
-    }
-
-    private boolean allAdjacentHit(int vertexIndex) {
-        if (checkIndex(vertexIndex)) {
-            for (int i = 0; i < max_vertex; i++) {
-                if (m_adjacency[vertexIndex][i] == 1 && !vertex[i].Hit) return false;
-            }
-        }
-        return true;
     }
 }

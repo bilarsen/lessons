@@ -116,6 +116,9 @@ public class SimpleGraphTest {
         List<Vertex> actual = graph.DepthFirstSearch(0, 4);
         Assert.assertTrue(expected.size() == actual.size() && expected.containsAll(actual) && actual.containsAll(expected));
 
+        actual = graph.DepthFirstSearch(4, 0);
+        Assert.assertTrue(expected.size() == actual.size() && expected.containsAll(actual) && actual.containsAll(expected));
+
         graph.RemoveEdge(0, 1);
         expected = new ArrayList<>();
         expected.add(graph.vertex[0]);

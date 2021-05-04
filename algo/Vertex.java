@@ -83,39 +83,28 @@ class SimpleGraph {
             vertex[VFrom].Hit = true;
             verticesHit.push(VFrom);
             int currentVertex = VFrom;
-            while (!verticesHit.isEmpty()) {
+            DFS: while (!verticesHit.isEmpty()) {
                 if (m_adjacency[currentVertex][VTo] == 1) {
                     verticesHit.push(VTo);
                     break;
-                }
-                if (allAdjacentHit(currentVertex)) {
-                    if (verticesHit.size() == 1) return vertices;
-                    currentVertex = verticesHit.pop();
-                    vertex[currentVertex].Hit = true;
                 }
                 for (int i = 0; i < max_vertex; i++) {
                     if (m_adjacency[currentVertex][i] == 1 && !vertex[i].Hit) {
                         vertex[i].Hit = true;
                         verticesHit.push(i);
                         currentVertex = i;
-                        break;
+                        continue DFS;
                     }
                 }
+                verticesHit.pop();
+                if (verticesHit.isEmpty()) return vertices;
+                currentVertex = verticesHit.peek();
             }
-            while (verticesHit.size() > 0) {
+            while (!verticesHit.isEmpty()) {
                 vertices.add(vertex[verticesHit.pollLast()]);
             }
         }
         return vertices;
-    }
-
-    private boolean allAdjacentHit(int vertexIndex) {
-        if (checkIndex(vertexIndex)) {
-            for (int i = 0; i < max_vertex; i++) {
-                if (m_adjacency[vertexIndex][i] == 1 && !vertex[i].Hit) return false;
-            }
-        }
-        return true;
     }
 
     private int findAvailableIndex() {

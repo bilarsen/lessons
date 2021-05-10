@@ -107,6 +107,37 @@ class SimpleGraph {
         return vertices;
     }
 
+    public ArrayList<Vertex> BreadthFirstSearch(int VFrom, int VTo) {
+        // Узлы задаются позициями в списке vertex.
+        // Возвращается список узлов -- путь из VFrom в VTo.
+        // Список пустой, если пути нету.
+        ArrayList<Vertex> vertices = new ArrayList<>();
+        if (!checkIndex(VFrom) || !checkIndex(VTo)) return vertices;
+        for (int i = 0; i < max_vertex; i++) vertex[i].Hit = false;
+        ArrayDeque<Integer> verticesHit = new ArrayDeque<>();
+        LinkedList<Vertex> optimalPath = new LinkedList<>();
+        vertex[VFrom].Hit = true;
+        verticesHit.offer(VFrom);
+        BFS: while (!verticesHit.isEmpty()) {
+            int currentVertex = verticesHit.poll();
+            optimalPath.add(vertex[currentVertex]);
+            if (m_adjacency[currentVertex][VTo] == 1) {
+                optimalPath.add(vertex[VTo]);
+                break;
+            }
+            int queueSize = verticesHit.size();
+            for (int i = 0; i < max_vertex; i++) {
+                if (m_adjacency[currentVertex][i] == 1 && !vertex[i].Hit) {
+                    verticesHit.offer(i);
+                    vertex[i].Hit = true;
+                }
+            }
+            if (queueSize == verticesHit.size()) optimalPath.removeLast();
+        }
+        vertices.addAll(optimalPath);
+        return vertices;
+    }
+
     private int findAvailableIndex() {
         for (int i = 0; i < max_vertex; i++) {
             if (vertex[i] == null) return i;

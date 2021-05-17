@@ -143,6 +143,90 @@ public class SimpleGraphTest {
         Assert.assertEquals(0, actual.size());
     }
 
+    @Test
+    public void testBreadthFirstSearch() {
+        graph.AddVertex(1);
+        graph.AddVertex(2);
+        graph.AddVertex(3);
+        graph.AddVertex(4);
+        graph.AddVertex(5);
+
+        graph.AddEdge(0, 1);
+        graph.AddEdge(0, 2);
+        graph.AddEdge(0, 3);
+        graph.AddEdge(1, 3);
+        graph.AddEdge(1, 4);
+        graph.AddEdge(2, 3);
+        graph.AddEdge(3, 4);
+
+        List<Vertex> expected = new ArrayList<>();
+        expected.add(graph.vertex[0]);
+        expected.add(graph.vertex[1]);
+        expected.add(graph.vertex[4]);
+        List<Vertex> actual = graph.BreadthFirstSearch(0, 4);
+        Assert.assertTrue(expected.size() == actual.size() && expected.containsAll(actual) && actual.containsAll(expected));
+
+        actual = graph.BreadthFirstSearch(4, 0);
+        Assert.assertTrue(expected.size() == actual.size() && expected.containsAll(actual) && actual.containsAll(expected));
+
+
+        // this should fail
+        graph = new SimpleGraph(9);
+        graph.AddVertex(0);
+        graph.AddVertex(1);
+        graph.AddVertex(2);
+        graph.AddVertex(3);
+        graph.AddVertex(4);
+        graph.AddVertex(5);
+        graph.AddVertex(6);
+        graph.AddVertex(7);
+        graph.AddVertex(8);
+
+        graph.AddEdge(0, 1);
+        graph.AddEdge(0, 2);
+        graph.AddEdge(0, 4);
+        graph.AddEdge(1, 2);
+        graph.AddEdge(2, 3);
+        graph.AddEdge(4, 5);
+        graph.AddEdge(5, 6);
+        graph.AddEdge(5, 7);
+        graph.AddEdge(7, 8);
+
+        expected = new ArrayList<>();
+        expected.add(graph.vertex[0]);
+        expected.add(graph.vertex[4]);
+        expected.add(graph.vertex[5]);
+        expected.add(graph.vertex[7]);
+        expected.add(graph.vertex[8]);
+        actual = graph.BreadthFirstSearch(0, 8); // should be {0, 4, 5, 7, 8}
+        System.out.println(Arrays.toString(getVertexValues(actual)));
+        Assert.assertTrue(expected.size() == actual.size() && expected.containsAll(actual) && actual.containsAll(expected));
+    }
+
+    @Test
+    public void testWeakVertices() {
+        graph.AddVertex(1);
+        graph.AddVertex(2);
+        graph.AddVertex(3);
+        graph.AddVertex(4);
+        graph.AddVertex(5);
+
+        graph.AddEdge(0, 1);
+        graph.AddEdge(0, 2);
+        graph.AddEdge(0, 3);
+        graph.AddEdge(1, 3);
+        graph.AddEdge(1, 4);
+        graph.AddEdge(2, 3);
+        graph.AddEdge(3, 4);
+
+        Assert.assertTrue(graph.WeakVertices().isEmpty());
+
+        graph.RemoveEdge(3, 4);
+        List<Vertex> actual = graph.WeakVertices();
+        Assert.assertFalse(actual.isEmpty());
+        Assert.assertEquals(5, actual.get(0).Value);
+    }
+
     // helper method to print out to console
     private int[] getVertexValues(List<Vertex> vertices) {
         int[] values = new int[vertices.size()];

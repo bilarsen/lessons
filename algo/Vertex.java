@@ -118,7 +118,7 @@ class SimpleGraph {
         LinkedList<Vertex> optimalPath = new LinkedList<>();
         vertex[VFrom].Hit = true;
         verticesHit.offer(VFrom);
-        BFS: while (!verticesHit.isEmpty()) {
+        while (!verticesHit.isEmpty()) {
             int currentVertex = verticesHit.poll();
             optimalPath.add(vertex[currentVertex]);
             if (m_adjacency[currentVertex][VTo] == 1) {
@@ -138,6 +138,15 @@ class SimpleGraph {
         return vertices;
     }
 
+    public ArrayList<Vertex> WeakVertices() {
+        // возвращает список узлов вне треугольников
+        ArrayList<Vertex> weakVertices = new ArrayList<>();
+        for (int i = 0; i < max_vertex; i++) {
+            if (!findTriangle(i)) weakVertices.add(vertex[i]);
+        }
+        return weakVertices;
+    }
+
     private int findAvailableIndex() {
         for (int i = 0; i < max_vertex; i++) {
             if (vertex[i] == null) return i;
@@ -147,5 +156,17 @@ class SimpleGraph {
 
     private boolean checkIndex(int index) {
         return index >= 0 && index < max_vertex;
+    }
+
+    private boolean findTriangle(int vertexIndex) {
+        for (int i = 0; i < max_vertex; i++) {
+            if (m_adjacency[vertexIndex][i] == 1 && vertexIndex != i) {
+                for (int j = 0; j < max_vertex; j++) {
+                    if (j == vertexIndex) continue;
+                    if (m_adjacency[i][j] == 1 && m_adjacency[vertexIndex][j] == 1) return true;
+                }
+            }
+        }
+        return false;
     }
 }

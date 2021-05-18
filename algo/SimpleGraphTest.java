@@ -170,7 +170,6 @@ public class SimpleGraphTest {
         Assert.assertTrue(expected.size() == actual.size() && expected.containsAll(actual) && actual.containsAll(expected));
 
 
-        // this should fail
         graph = new SimpleGraph(9);
         graph.AddVertex(0);
         graph.AddVertex(1);
@@ -198,9 +197,12 @@ public class SimpleGraphTest {
         expected.add(graph.vertex[5]);
         expected.add(graph.vertex[7]);
         expected.add(graph.vertex[8]);
-        actual = graph.BreadthFirstSearch(0, 8); // should be {0, 4, 5, 7, 8}
-        System.out.println(Arrays.toString(getVertexValues(actual)));
+        actual = graph.BreadthFirstSearch(0, 8);
         Assert.assertTrue(expected.size() == actual.size() && expected.containsAll(actual) && actual.containsAll(expected));
+
+        graph.RemoveEdge(7, 8);
+        actual = graph.BreadthFirstSearch(0, 8);
+        Assert.assertTrue(actual.isEmpty());
     }
 
     @Test

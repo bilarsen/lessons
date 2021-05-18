@@ -83,7 +83,8 @@ class SimpleGraph {
             vertex[VFrom].Hit = true;
             verticesHit.push(VFrom);
             int currentVertex = VFrom;
-            DFS: while (!verticesHit.isEmpty()) {
+            DFS:
+            while (!verticesHit.isEmpty()) {
                 if (m_adjacency[currentVertex][VTo] == 1) {
                     verticesHit.push(VTo);
                     break;
@@ -113,29 +114,29 @@ class SimpleGraph {
         // Список пустой, если пути нету.
         ArrayList<Vertex> vertices = new ArrayList<>();
         if (!checkIndex(VFrom) || !checkIndex(VTo)) return vertices;
+        if (VFrom == VTo) {
+            vertices.add(vertex[VFrom]);
+            return vertices;
+        }
         for (int i = 0; i < max_vertex; i++) vertex[i].Hit = false;
+        int[] prevVertices = new int[max_vertex];
+        Arrays.fill(prevVertices, -1);
         ArrayDeque<Integer> verticesHit = new ArrayDeque<>();
-        LinkedList<Vertex> optimalPath = new LinkedList<>();
         vertex[VFrom].Hit = true;
         verticesHit.offer(VFrom);
+        BFS:
         while (!verticesHit.isEmpty()) {
             int currentVertex = verticesHit.poll();
-            optimalPath.add(vertex[currentVertex]);
-            if (m_adjacency[currentVertex][VTo] == 1) {
-                optimalPath.add(vertex[VTo]);
-                break;
-            }
-            int queueSize = verticesHit.size();
             for (int i = 0; i < max_vertex; i++) {
                 if (m_adjacency[currentVertex][i] == 1 && !vertex[i].Hit) {
                     verticesHit.offer(i);
                     vertex[i].Hit = true;
+                    prevVertices[i] = currentVertex;
+                    if (i == VTo) break BFS;
                 }
             }
-            if (queueSize == verticesHit.size()) optimalPath.removeLast();
         }
-        vertices.addAll(optimalPath);
-        return vertices;
+        return tracePath(prevVertices, vertices, VTo);
     }
 
     public ArrayList<Vertex> WeakVertices() {
@@ -168,5 +169,16 @@ class SimpleGraph {
             }
         }
         return false;
+    }
+
+    private ArrayList<Vertex> tracePath(int[] prevVertices, ArrayList<Vertex> vertices, int vertexTo) {
+        if (prevVertices[vertexTo] == -1) return vertices;
+        int currentVertex = vertexTo;
+        while (currentVertex != -1) {
+            vertices.add(vertex[currentVertex]);
+            currentVertex = prevVertices[currentVertex];
+        }
+        Collections.reverse(vertices);
+        return vertices;
     }
 }

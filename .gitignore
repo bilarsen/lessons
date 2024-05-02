@@ -3,3 +3,5 @@
 *.class
 *.iml
 /out/
+.gradle
+/build
